@@ -1,20 +1,10 @@
 import json
 import requests
 import time
-
-class MeetingDeviceController:
-    def __init__(self, server_ip, user_id="123"):
-        self.server_ip = server_ip
-        self.base_api_url = f"http://{server_ip}:8090/api/v2/gateway/iot"
-        self.meeting_api_url = f"http://{server_ip}:8090/api/v2/gateway/meeting"
-
-    def manual_control(self, action_type):
-        if action_type == "start_projection":
-            self.control_screen_brightness(80)  # 高亮度
-            print("投影开始 - 屏幕亮度已调高")
-        elif action_type == "end_projection":
-            self.control_screen_brightness(30)  # 低亮度
-            print("投影结束 - 屏幕亮度已调低")
+class MeetingDeviceIot:
+    def __init__(self, user_id="123"):
+        self.base_api_url = f"http://10.30.35.115:8090/api/v2/gateway/iot"
+        self.meeting_api_url = f"http://10.30.35.115:8090/api/v2/gateway/meeting"
 
     def get_screen_brightness(self):
         """获取大屏亮度"""
@@ -35,20 +25,63 @@ class MeetingDeviceController:
             print(f"获取屏幕亮度出错: {e}")
             return None
 
-    def control_screen_brightness(self, brightness_level):
-        """控制大屏亮度"""
-        api_url = f"{self.base_api_url}/screen/brightness/set"
-        payload = {
-            "brightness": brightness_level
-        }
+    def get_screen_status(self):
+        """获取大屏状态"""
+        api_url = f"{self.base_api_url}/screen/status"
         try:
-            response = requests.get(api_url, params=payload)
-            print(f"亮度控制响应: {response.status_code}")
-            return response.status_code == 200
+            response = requests.get(api_url)
+            print(f"获取屏幕状态响应: {response.status_code}")
+            if response.status_code == 200:
+                data = response.json()
+                if data["isSuccess"]:
+                    status = data["data"]
+                    print(f"当前屏幕状态: {status}")
+                    return status
+                else:
+                    print(f"获取屏幕状态失败: {data['msg']}")
+            return None
         except Exception as e:
-            print(f"控制屏幕亮度出错: {e}")
-            return False
-            
+            print(f"获取屏幕状态出错: {e}")
+            return None
+        
+    def get_screen_voice(self):
+        """获取大屏音量"""
+        api_url = f"{self.base_api_url}/screen/voice"
+        try:
+            response = requests.get(api_url)
+            print(f"获取音量响应: {response.status_code}")
+            if response.status_code == 200:
+                data = response.json()
+                if data["isSuccess"]:
+                    voice = data["data"]
+                    print(f"当前音量: {voice}")
+                    return voice
+                else:
+                    print(f"获取音量失败: {data['msg']}")
+            return None
+        except Exception as e:
+            print(f"获取音量出错: {e}")
+            return None
+    
+    def get_recording_status(self):
+        """查询录音状态"""
+        api_url = f"{self.base_api_url}/screen/voiceRecordStatus"
+        try:
+            response = requests.get(api_url)
+            print(f"获取录音状态响应: {response.status_code}")
+            if response.status_code == 200:
+                data = response.json()
+                if data["isSuccess"]:
+                    status = data["data"]
+                    print(f"当前录音状态: {status}")
+                    return status
+                else:
+                    print(f"获取录音状态失败: {data['msg']}")
+            return None
+        except Exception as e:
+            print(f"获取录音状态出错: {e}")
+            return None
+
     def switch_microphone_mute(self):
         """切换麦克风静音状态"""
         api_url = f"{self.meeting_api_url}/switchMute"
@@ -68,18 +101,30 @@ class MeetingDeviceController:
             return False
 
 if __name__ == "__main__":
-    controller = MeetingDeviceController("10.30.35.115")
+    ControllerIot = MeetingDeviceIot()
     
     # 提供简单的命令行界面
     while True:
-        cmd = input("输入命令 (start/end/brightness/mic/quit): ")
-        if cmd == "start":
-            controller.manual_control("start_projection")
-        elif cmd == "end":
-            controller.manual_control("end_projection")
-        elif cmd == "brightness":
-            controller.get_screen_brightness()
-        elif cmd == "mic":
-            controller.switch_microphone_mute()
+        cmd = input("输入命令 (iot/quit): ").strip().lower()
+        if cmd == "iot":
+            cmd = input("输入命令 (screen/quit): ").strip().lower()
+            if cmd == "screen":
+                cmd = input("输入命令 (brightness/status/voice/voiceRecordStatus/quit): ").strip().lower()
+                if cmd == "brightness":
+                    ControllerIot.get_screen_brightness()
+                elif cmd == "status":
+                    ControllerIot.get_screen_status()
+                elif cmd == "voice":
+                    ControllerIot.get_screen_voice()
+                elif cmd == "voiceRecordStatus":
+                    ControllerIot.get_recording_status()
+                elif cmd == "..":
+                    continue
+                elif cmd == "quit":
+                    break  
+            elif cmd == "..":
+                continue
+            elif cmd == "quit":
+                break
         elif cmd == "quit":
             break
