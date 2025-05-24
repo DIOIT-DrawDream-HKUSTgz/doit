@@ -161,61 +161,16 @@ class MeetingDeviceControl:
             print("无效的状态参数，请使用 'open' 或 'close'")
             return False
         return self.control_device("screenVoiceRecord", status)
+    
+class MeetingOtherDeviceControl:
+    def __init__(self, user="123"):
+        self.base_api_url = f"http://http://10.30.35.115:8090/api/v2/gateway"
 
-if __name__ == "__main__":
-    ControllerGet = MeetingDeviceGet()
-    Controller = MeetingDeviceControl()
-
-    while True:
-        cmd = input("输入命令 (get/control/quit): ").strip().lower()
-        if cmd == "get":
-            cmd = input("输入命令 (screen/quit): ").strip().lower()
-            if cmd == "screen":
-                cmd = input("输入命令 (brightness/status/voice/voiceRecordStatus/quit): ").strip().lower()
-                if cmd == "brightness":
-                    ControllerGet.get_screen_brightness()
-                elif cmd == "status":
-                    ControllerGet.get_screen_status()
-                elif cmd == "voice":
-                    ControllerGet.get_screen_voice()
-                elif cmd == "voicerecordstatus":
-                    ControllerGet.get_recording_status()
-                elif cmd == "..":
-                    continue
-                elif cmd == "quit":
-                    break  
-                else:
-                    print("无效的命令，请重新输入")
-            elif cmd == "..":
-                continue
-            elif cmd == "quit":
-                break
-            else :
-                print("无效的命令，请重新输入")
-        elif cmd == "control":
-            cmd = input("输入命令 (screen/screenVolume/screenVoice/screenBrightness/quit): ").strip().lower()
-            if cmd == "screen":
-                param = input("输入参数 (open/close): ").strip().lower()
-                Controller.control_screen_power(param)
-            elif cmd == "screenvolume":
-                param = input("输入音量值 (0-100): ").strip()
-                Controller.control_screen_volume(param)
-            elif cmd == "screenvoice":
-                param = input("输入参数 (open/close): ").strip().lower()
-                Controller.control_screen_voice(param)
-            elif cmd == "screenbrightness":
-                param = input("输入亮度值 (0-100): ").strip()
-                Controller.control_screen_brightness(param)
-            elif cmd == "screenvoicerecord":
-                param = input("输入参数 (open/close): ").strip().lower()
-                Controller.control_screen_voice_record(param)
-            elif cmd == "..":
-                continue
-            elif cmd == "quit":
-                break
-            else:
-                print("无效的命令，请重新输入")
-        elif cmd == "quit":
-            break
-        else:
-            print("无效的命令，请重新输入")
+    def control_screen_voice_record_status(action, self, status):
+        """录音控制
+        参数: status - 'start' 或 'stop' 或 'pause' 或 'resume'
+        """
+        if status not in ['start', 'stop', 'pause', 'resume']:
+            print("无效的状态参数，请使用 'start' 或 'stop' 或 'pause' 或 'resume'")
+            return False
+        

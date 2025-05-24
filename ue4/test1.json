@@ -1,0 +1,5 @@
+{
+  "objectPath": "/Game/FlyingBP/Maps/FlyingExampleMap.FlyingExampleMap:PersistentLevel.LightSource.LightComponent0",
+  "access": "READ_ACCESS",
+  "propertyName": "RelativeRotation"
+}
