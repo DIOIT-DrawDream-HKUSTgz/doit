@@ -1,5 +1,5 @@
 from menu.menu_base import MenuBase
-from menu.screen_get_menu import ScreenGetMenu
+from menu.control.screen_get_menu import ScreenGetMenu
 
 class GetMenu(MenuBase):
     """获取信息菜单"""
