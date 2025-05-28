@@ -1,6 +1,5 @@
-from .base_api import BaseApi
+from ..api_base import BaseApi
 import requests
-from .other_device_control import OtherDeviceControl
 
 class DeviceControl(BaseApi):
     """设备控制API"""

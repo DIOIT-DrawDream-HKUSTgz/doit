@@ -4,7 +4,7 @@ class BaseApi:
     """API基类，提供通用请求处理功能"""
     
     def __init__(self, user_id="123"):
-        self.base_api_url = "http://10.30.35.115:8090/api/v2/gateway/iot"
+        self.base_api_url = "http://10.30.35.115:8090/api/v2/gateway"
         self.user_id = user_id
         
     def send_request(self, method, endpoint, params=None):

@@ -1,4 +1,4 @@
-from .base_api import BaseApi
+from ..api_base import BaseApi
 import requests
 
 class OtherDeviceControl(BaseApi):

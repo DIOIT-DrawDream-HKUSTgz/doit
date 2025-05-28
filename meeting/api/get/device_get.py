@@ -1,4 +1,4 @@
-from api_base import BaseApi
+from ..api_base import BaseApi
 
 class DeviceGet(BaseApi):
     """设备信息获取API"""
@@ -6,19 +6,19 @@ class DeviceGet(BaseApi):
     # 类变量-操作字典
     operations = {
         'brightness': {
-            'endpoint': 'screen/brightness',
+            'endpoint': 'iot/screen/brightness',
             'name': '屏幕亮度'
         },
         'status': {
-            'endpoint': 'screen/status',
+            'endpoint': 'iot/screen/status',
             'name': '屏幕状态'
         },
         'voice': {
-            'endpoint': 'screen/voice',
+            'endpoint': 'iot/screen/voice',
             'name': '音量'
         },
         'recording_status': {
-            'endpoint': 'screen/voiceRecordStatus',
+            'endpoint': 'iot/screen/voiceRecordStatus',
             'name': '录音状态'
         }
     }

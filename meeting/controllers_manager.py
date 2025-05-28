@@ -7,7 +7,6 @@ class ControllersManager:
     def register_controller(self, name, controller):
         """注册一个控制器实例"""
         if name in self.controllers:
-            # 如果已经存在同名控制器，转为列表存储多个
             if not isinstance(self.controllers[name], list):
                 self.controllers[name] = [self.controllers[name]]
             self.controllers[name].append(controller)
@@ -20,17 +19,24 @@ class ControllersManager:
     
     def __getattr__(self, name):
         """动态查找并调用控制器方法"""
-        # 遍历所有控制器，查找包含该方法的控制器
+        available_methods = []
+        
         for controller_key, controller in self.controllers.items():
-            # 如果是控制器列表，则遍历列表
             if isinstance(controller, list):
                 for single_controller in controller:
                     if hasattr(single_controller, name):
                         return getattr(single_controller, name)
+                    available_methods.extend(dir(single_controller))
             else:
-                # 单个控制器
                 if hasattr(controller, name):
                     return getattr(controller, name)
-                
-        # 如果找不到方法，抛出AttributeError
-        raise AttributeError(f"没有找到方法: {name}")
+                available_methods.extend(dir(controller))
+
+        public_methods = [m for m in set(available_methods) if not m.startswith('_')]
+        similar_methods = [m for m in public_methods if name.lower() in m.lower()]
+
+        error_msg = f"没有找到方法: {name}"
+        if similar_methods:
+            error_msg += f"\n可能的方法: {', '.join(similar_methods)}"
+        
+        raise AttributeError(error_msg)

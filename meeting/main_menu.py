@@ -1,5 +1,5 @@
 from menu.menu_base import MenuBase
-from menu.get_menu import GetMenu
+from menu.menu import GetMenu
 from menu.control.control_menu import ControlMenu
 
 class MainMenu(MenuBase):
