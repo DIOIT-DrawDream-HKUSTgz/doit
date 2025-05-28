@@ -1,6 +1,6 @@
 from menu.menu_base import MenuBase
-from menu.get_menu import GetMenu
-from menu.control_menu import ControlMenu
+from menu.do_menu import GetMenu
+from menu.control.control_menu import ControlMenu
 
 class MainMenu(MenuBase):
     """主菜单实现"""
