@@ -1,13 +1,12 @@
 from menu.menu_base import MenuBase
-from menu.do_menu import GetMenu
+from menu.get_menu import GetMenu
 from menu.control.control_menu import ControlMenu
 
 class MainMenu(MenuBase):
     """主菜单实现"""
     
-    def __init__(self, get_controller, control_controller):
-        self.get_controller = get_controller
-        self.control_controller = control_controller
+    def __init__(self, controllers_manager):
+        self.controllers = controllers_manager  # 存储控制器管理器
         
         self.get_menu = None
         self.control_menu = None
@@ -20,8 +19,8 @@ class MainMenu(MenuBase):
         super().__init__("主菜单", "输入命令 (get/control/quit): ", commands)
         
         # 延迟初始化子菜单，避免循环引用
-        self.get_menu = GetMenu(get_controller, self)
-        self.control_menu = ControlMenu(control_controller, self)
+        self.get_menu = GetMenu(controllers_manager, self)
+        self.control_menu = ControlMenu(controllers_manager, self)
         
     def handle_get(self):
         """处理获取信息命令"""

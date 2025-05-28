@@ -15,12 +15,13 @@ class OtherDeviceControl(BaseApi):
         if status not in ['start', 'stop', 'pause', 'resume']:
             print("无效的状态参数，请使用 'start' 或 'stop' 或 'pause' 或 'resume'")
             return False
-            
-        # 这里添加具体的控制录音状态的实现逻辑
-        api_url = f"{self.base_api_url}/voice/record/{status}"
-        
+
+        api_url = f"{self.base_api_url}/iot/voiceRecordControl"
+        params = {
+            "status": status
+        }
         try:
-            response = requests.post(api_url)
+            response = requests.get(api_url, params=params)
             print(f"录音控制响应: {response.status_code}")
             if response.status_code == 200:
                 data = response.json()
@@ -28,7 +29,12 @@ class OtherDeviceControl(BaseApi):
                     print(f"录音控制成功: {status}")
                     return True
                 else:
-                    print(f"录音控制失败: {data.get('msg')}")
+                    # print(data.get("code"))
+                    if data.get("code") == -1:
+                        print(f"当前无会议") 
+                        return True  
+                    else:
+                        print(f"录音控制失败: {data.get('msg')}")
             return False
         except Exception as e:
             print(f"录音控制出错: {e}")

@@ -1,37 +1,31 @@
 from menu.menu_base import MenuBase
 
 class ScreenGetMenu(MenuBase):
-    """屏幕信息获取菜单"""
+    """获取屏幕信息菜单"""
     
-    def __init__(self, get_controller, parent):
-        self.get_controller = get_controller
+    def __init__(self, controllers, parent):
+        self.controllers = controllers  # 修改为使用控制器管理器
         
         commands = {
-            'brightness': (self.get_brightness, "获取屏幕亮度"),
+            # 假设有这些命令
             'status': (self.get_status, "获取屏幕状态"),
-            'voice': (self.get_voice, "获取屏幕声音"),
-            'voicerecordstatus': (self.get_voice_record_status, "获取录音状态")
+            'volume': (self.get_volume, "获取屏幕音量"),
+            # 其他命令...
         }
         
         super().__init__(
-            "屏幕菜单", 
-            "输入命令 (brightness/status/voice/voiceRecordStatus/quit/back): ", 
-            commands, 
+            "屏幕信息菜单",
+            "输入命令 (status/volume/quit/back): ",
+            commands,
             parent
         )
         
-    def get_brightness(self):
-        """获取屏幕亮度"""
-        self.get_controller.get_screen_brightness()
-        
     def get_status(self):
         """获取屏幕状态"""
-        self.get_controller.get_screen_status()
+        return self.controllers.get_screen_status()  # 使用controllers代替之前的单一控制器
         
-    def get_voice(self):
-        """获取屏幕声音"""
-        self.get_controller.get_screen_voice()
+    def get_volume(self):
+        """获取屏幕音量"""
+        return self.controllers.get_screen_volume()  # 使用controllers代替之前的单一控制器
         
-    def get_voice_record_status(self):
-        """获取录音状态"""
-        self.get_controller.get_recording_status()
+    # 其他方法...

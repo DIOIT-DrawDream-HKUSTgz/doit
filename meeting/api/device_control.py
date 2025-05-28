@@ -1,5 +1,6 @@
 from .base_api import BaseApi
 import requests
+from .other_device_control import OtherDeviceControl
 
 class DeviceControl(BaseApi):
     """设备控制API"""
@@ -77,10 +78,19 @@ class DeviceControl(BaseApi):
         return self.control_device("screenBrightness", str(brightness))
     
     def control_screen_voice_record(self, status):
-        """控制大屏录音开关
-        参数: status - 'open' 或 'close'
+        """控制大屏录音
+        参数: status - 'start' 或 'stop' 或 'pause' 或 'resume'
         """
-        if status not in ['open', 'close']:
-            print("无效的状态参数，请使用 'open' 或 'close'")
+        if status not in ['start', 'stop', 'pause', 'resume']:
+            print("无效的状态参数，请使用 'start' 或 'stop' 或 'pause' 或 'resume'")
             return False
         return self.control_device("screenVoiceRecord", status)
+    
+    # def control_screen_voice_record_status(self, status):
+    #     """控制录音
+        
+    #     参数:
+    #         status: 'start' 或 'stop' 或 'pause' 或 'resume'
+    #     """
+    #     other_device_control = OtherDeviceControl()
+    #     return other_device_control.control_screen_voice_record_status(status)
