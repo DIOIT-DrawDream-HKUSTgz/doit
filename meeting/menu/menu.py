@@ -1,5 +1,6 @@
 from menu.menu_base import MenuBase
 from menu.get.screen_get_menu import ScreenGetMenu
+from menu.get.other_get_menu import OtherGetMenu
 
 class GetMenu(MenuBase):
     """获取信息菜单"""
@@ -17,6 +18,7 @@ class GetMenu(MenuBase):
         super().__init__("获取菜单", "输入命令 (screen/other/quit/back): ", commands, parent)
         
         self.screen_menu = ScreenGetMenu(controllers, self)
+        self.other_menu = OtherGetMenu(controllers, self)
         
     def handle_screen(self):
         """处理屏幕信息命令"""
