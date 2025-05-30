@@ -39,3 +39,59 @@ class OtherDeviceControl(BaseApi):
         except Exception as e:
             print(f"录音控制出错: {e}")
             return False
+    
+    def invite_cloud_tx_meeting(self, user_names):
+        """ 邀请加入腾讯云会议"""
+        api_url = f"{self.base_api_url}/meeting/inviteUser"
+        
+        # 如果传入的是列表，转换为逗号分隔的字符串
+        if isinstance(user_names, list):
+            user_names_str = ",".join(user_names)
+        else:
+            user_names_str = user_names
+        
+        params = {
+            "userNames": user_names_str
+        }
+        
+        try:
+            response = requests.get(api_url, params=params)
+            if response.status_code == 200:
+                print(f"状态码: {response.status_code}")
+                data = response.json()
+                inner_data = data.get("data", {})
+                if inner_data["isSuccess"]==True:
+                    # print(data)
+                    print(f"邀请成功: {inner_data.get('msg', '')}")
+                else:
+                    print(f"邀请失败: {inner_data.get('msg', '')}")
+            else:
+                print("邀请加入腾讯云会议失败，状态码:", response.status_code)
+        except Exception as e:
+            print(f"请求失败: {e}")
+            return False
+        
+    def join_cloud_tx_meeting(self, Code, pswd):
+        """ 加入腾讯云会议"""
+        api_url = f"{self.base_api_url}/meeting/join"
+        params = {
+            "meetingCode": Code,
+            "password": pswd
+        }
+        try:
+            response = requests.get(api_url, params=params)
+            if response.status_code == 200:
+                print(f"状态码: {response.status_code}")
+                data = response.json()
+                print(data)
+                if data["isSuccess"]==True:
+                    # print(data)
+                    print(f"加入会议成功: {data.get('msg', '')}")
+                else:
+                    print(f"加入会议失败: {data.get('msg', '')}")
+            else:
+                print("加入腾讯云会议失败，状态码:", response.status_code)
+        except Exception as e:
+            print(f"请求失败: {e}")
+            return False
+        

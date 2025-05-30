@@ -1,5 +1,6 @@
 from api.control.device_control import DeviceControl
 from api.control.other_device_control import OtherDeviceControl
+from api.control.get_control import GetControl
 from api.get.device_get import DeviceGet
 from api.get.other_get import OtherGet
 from controllers_manager import ControllersManager
@@ -10,9 +11,10 @@ def main():
     controllers = ControllersManager()
     
     controllers.register_controller("get", DeviceGet())
-    controllers.register_controller("room_get", OtherGet())
+    controllers.register_controller("room_g t", OtherGet())
     controllers.register_controller("control", DeviceControl())
     controllers.register_controller("other_control", OtherDeviceControl())
+    controllers.register_controller("get_control", GetControl())
 
     cli = MainMenu(controllers)
     cli.handle_input()
