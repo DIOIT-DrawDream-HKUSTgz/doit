@@ -14,17 +14,24 @@ class ControlMenu(MenuBase):
             'screenvoicerecord': (self.control_voice_record, "控制屏幕录音"),
             'endmeeting': (self.end_meeting, "结束会议"),
             'closehotcode': (self.close_hot_code, "关闭热码投屏"),
-            'endcloudtxmeeting': (self.end_meeting, "结束腾讯云会议"),
+            'endcloudtxmeeting': (self.end_cloud_tx_meeting, "结束腾讯云会议"),
             'invitecloudtxmeeting': (self.invite_cloud_tx_meeting, "邀请加入腾讯云会议"),
             'joincloudtxmeeting': (self.join_cloud_tx_meeting, "加入腾讯云会议"),
             'querymeetinglist': (self.query_meeting_list, "查询会议列表"),
             'quickmeeting': (self.quick_meeting, "快速会议"),
             'desktophotkey': (self.desk_top_hot_key, "热码投屏"),
+            'sharedesk': (self.share_desk, "共享桌面"),
+            'closesharedesk': (self.close_share_desk, "关闭共享桌面"),
+            'startmeeting': (self.start_meeting, "开始会议"),
+            'startbyid': (self.start_meeting_by_id, "通过ID启动会议"),
+            'startcloudmeeting': (self.start_cloud_meeting, "开始腾讯云会议"),
+            'switchmute': (self.switch_mute, "会议开始中点击麦克风修改状态"),
+            'switchvideo': (self.switch_video, "会议开始中点击摄像头修改状态"),
         }
         
         super().__init__(
             "控制菜单", 
-            "输入命令 (screen/screenVolume/screenVoice/screenBrightness/screenVoiceRecord/endMeeting/closeHotCode/ \n          endCloudTXMeeting/inviteCloudTXMeeting/joinCloudTXMeeting/queryMeetingList/quickmeeting/deskTopHotKey/quit/back):", 
+            "输入命令 (screen/screenVolume/screenVoice/screenBrightness/screenVoiceRecord/endMeeting/closeHotCode/ \n          endCloudTXMeeting/inviteCloudTXMeeting/joinCloudTXMeeting/queryMeetingList/quickmeeting/deskTopHotKey/ \n          shareDesk/closeShareDesk/startMeeting/startById/startCloudMeeting/switchMute/switchVideo/quit/back):", 
             commands, 
             parent
         )
@@ -74,7 +81,7 @@ class ControlMenu(MenuBase):
     
     def end_cloud_tx_meeting(self):
         """结束腾讯云会议"""
-        return self.controllers.end_meeting()
+        return self.controllers.end_cloud_tx_meeting()
     
     def invite_cloud_tx_meeting(self):
         """邀请腾讯云会议"""
@@ -115,3 +122,39 @@ class ControlMenu(MenuBase):
     def desk_top_hot_key(self):
         """热码投屏"""
         return self.controllers.desk_top_hot_key()
+    
+    def share_desk(self):
+        """共享桌面"""
+        return self.controllers.share_desk()
+    
+    def close_share_desk(self):
+        """关闭共享桌面"""
+        return self.controllers.close_share_desk()
+    
+    def start_meeting(self):
+        """开始会议"""
+        return self.controllers.start_meeting()
+    
+    def start_meeting_by_id(self):
+        """通过ID启动会议"""
+        try:
+            meeting_id = input("请输入会议ID: ").strip()
+            if not meeting_id:
+                print("会议ID不能为空")
+                return False
+            return self.controllers.start_meeting_by_id(meeting_id)
+        except Exception as e:
+            print(f"启动会议失败: {e}")
+            return False
+        
+    def start_cloud_meeting(self):
+        """开始腾讯云会议"""
+        return self.controllers.start_cloud_meeting()
+    
+    def switch_mute(self):
+        """会议开始中点击麦克风修改状态"""
+        return self.controllers.switch_mute()
+    
+    def switch_video(self):
+        """会议开始中点击摄像头修改状态"""
+        return self.controllers.switch_video()

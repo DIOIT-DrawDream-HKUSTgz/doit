@@ -11,7 +11,7 @@ def main():
     controllers = ControllersManager()
     
     controllers.register_controller("get", DeviceGet())
-    controllers.register_controller("room_g t", OtherGet())
+    controllers.register_controller("other_get", OtherGet())
     controllers.register_controller("control", DeviceControl())
     controllers.register_controller("other_control", OtherDeviceControl())
     controllers.register_controller("get_control", GetControl())
